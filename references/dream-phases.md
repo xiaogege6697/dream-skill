@@ -1,11 +1,22 @@
 # Dream 6 阶段详解
 
-## Phase 0 · 入睡校准
+## Phase 0 · 入睡校准（含架构 onboarding）
 
-- 读三总揽：`MEMORY.md`（索引）+ `CONVENTIONS.md`（规范）+ `ARCHITECTURE.md`（蓝图）
-- 快照现状：`ls` 各层计数 + 关键文件 shasum（回滚锚）
-- 红线确认：原始层只读 / 禁 rm / stale 不删
-- 定范围：本次重点（记忆 / 架构 / 回路 / 全量）
+**0a. 动态定位项目目录**（绝不写死路径）
+- 首选 `$CLAUDE_PROJECT_DIR`（CC 运行时注入），兜底 `cwd`
+- 不假设 `projects/-Users-xxx/` 这类用户特有的路径编码（每用户不同）
+
+**0b. 功能检测**（以功能为依据，非路径字符串）
+- 查 `<项目目录>/memory/` 三层子目录 + 骨架文件（MEMORY.md/CONVENTIONS.md/ARCHITECTURE.md）是否存在
+- ✅ 全在 → 跳 0d
+- ❌ 缺失 → 先 0c onboarding
+
+**0c. onboarding（缺失时）**
+- `mkdir memory/{log,facts,lessons,projects,ideas,archive,transcripts}` + 各 `.gitkeep`
+- 写骨架：`MEMORY.md`（空索引模板）/ `CONVENTIONS.md`（规范，参考 [`conventions.md`](conventions.md)）/ `ARCHITECTURE.md`（蓝图模板）
+- CC 机制指引（**只提示，不改用户配置**）：CLAUDE.md 加 dream 触发词 + 配 SessionEnd hook 把会话 jsonl 提取到 `transcripts/` → 询问用户是否采纳
+
+**0d. 已有架构**：读三总揽（MEMORY+CONVENTIONS+ARCHITECTURE）→ `ls` 各层计数 + 关键文件 shasum（回滚锚）→ 红线确认（原始层只读/禁 rm/stale 不删）→ 定范围（记忆/架构/回路/全量）
 
 ## Phase 1 · 慢波巩固（海马→皮层）
 
@@ -24,6 +35,7 @@
 
 - 知识层去重（grep 相似）、合并近似条目
 - `MEMORY.md` 索引瘦身（<150 行，每条一行 hook）
+- **索引 >120 行（接近上限）→ 建议分领域索引**（如 `MEMORY-<域>.md`，MEMORY.md 只留域指针）。提示用户，不擅自拆
 - 过时条目标 `status: stale` + 指向新条目（**不删**）
 - 检查规范被遵守情况，违反标 `[冲突]` 待裁决
 
@@ -34,6 +46,7 @@
 - ⚠️ **不碰 `.transcript-progress/`**（脚本书签）
 - 一律 `mv` 到 `trash/$(date +%Y-%m-%d)/`，**禁 rm**
 - 输出释放空间 + 清理清单
+- **transcripts >50 篇 → 仅提示磁盘占用**：⛔ 红线禁止移动/压缩/归档 transcripts，dream 不擅动，只报告占用由用户决定
 
 ## Phase 5 · 髓鞘化 + 架构自检
 

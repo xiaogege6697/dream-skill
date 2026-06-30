@@ -1,11 +1,15 @@
 # 三层记忆架构搭建（B 方案前置）
 
-Dream 依赖一套三层 markdown 记忆库。未搭建先按本文搭好（约 10 分钟）。
+Dream 依赖一套三层 markdown 记忆库。**首次跑 dream 会自动检测，缺失则 onboarding 帮你建**（见下"搭建步骤"）；本文也供手动搭建/参考。
+
+## 项目目录定位（动态，绝不写死）
+
+dream 用 `$CLAUDE_PROJECT_DIR`（CC 注入）或 `cwd` 定位项目目录——**不写死路径**。CC 按家目录编码项目目录（如 `/Users/alice` → `~/.claude/projects/-Users-alice/`，每用户不同），所以别复制别人的路径，以实际定位为准。
 
 ## 目录结构
 
 ```
-~/.claude/projects/<你的项目>/
+<项目目录>/              # $CLAUDE_PROJECT_DIR 或 cwd
 ├── CLAUDE.md            # 工作规范（每次注入）
 └── memory/
     ├── MEMORY.md        # 索引入口（<150 行，每次注入）
@@ -37,13 +41,23 @@ Dream 依赖一套三层 markdown 记忆库。未搭建先按本文搭好（约 
 日志层产生新内容 → 提炼进入知识层 → 索引层指向知识层
 ```
 
-## 搭建步骤
+## 搭建步骤（dream onboarding 自动执行，也可手动）
 
+**方式 A（推荐）：直接说"做梦"触发 dream** → Phase 0 检测到架构缺失，自动 onboarding：mkdir 三层目录 + 写骨架模板 + 给 CC 机制指引。
+
+**方式 B（手动）**：
 1. 建目录：`memory/{log,facts,lessons,projects,ideas,archive,transcripts}`
 2. 写 `MEMORY.md`：索引入口，<150 行，每个知识条目一行指针（hook 摘要）
-3. 写 `CONVENTIONS.md`：操作规范（写入判定/wiki-link/frontmatter，见 [`conventions.md`](conventions.md)）
-4. 写 `ARCHITECTURE.md`：蓝图全景 + 变更日志（每次架构调整追加一条）
-5. 配逐字稿提取：会话结束把原生会话 jsonl 提取成 `transcripts/YYYY-MM-DD.md`（原始层，只增不减）
+3. 写 `CONVENTIONS.md`：操作规范（见 [`conventions.md`](conventions.md)）
+4. 写 `ARCHITECTURE.md`：蓝图全景 + 变更日志
+5. 配逐字稿提取：会话结束把 jsonl 提取成 `transcripts/YYYY-MM-DD.md`（只增不减）
+
+## CC 机制 onboarding（dream 检测+指引，不擅自改你配置）
+
+dream 依赖 3 个 Claude Code 机制，缺失时 dream 会提示你配（**只指引不改**）：
+1. **CLAUDE.md 注入**：在你的 CLAUDE.md 加 dream 触发指引（"说做梦/dream 触发 dream skill"）+ 三层架构说明
+2. **MEMORY.md 每次注入**：CC 的 autoMemory 或 CLAUDE.md 指向 `memory/MEMORY.md`
+3. **SessionEnd hook 存 transcripts**：配 hook 把会话 jsonl 提取到 `memory/transcripts/YYYY-MM-DD.md`（原始层入口；没它 transcripts 不增长）
 
 ## 设计哲学（5 条）
 
