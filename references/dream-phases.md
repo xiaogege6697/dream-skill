@@ -52,6 +52,7 @@
 
 - 高频手动流程 → 沉淀/优化 skill（"用过 3 次"阈值）
 - 校验工具路由表 / hook / 工作流回路健康
+- **项目归档检测**：扫 `projects/*/PROGRESS.md`，`status: done|abandoned` → **提示用户归档**（整个 `projects/xxx/` mv 到 `archive/projects/`，不自动挪等确认）
 - **架构自检**：`ls` 实际 vs `ARCHITECTURE` 蓝图数字对账
 - 架构变动 → 全量更新蓝图 + 变更日志
 

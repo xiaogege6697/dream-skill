@@ -41,7 +41,7 @@ description: "Dream 工作流：模仿人脑睡眠做梦，对文件型记忆库
 | 2 REM 关联 | 跨条目找隐藏关联 → 补 wiki-link → 生新想法 → 找孤儿条目 | phases §2 |
 | 3 稳态瘦身 | 去重合并 → 索引瘦身(<150行) → 过时标 stale | phases §3 |
 | 4 类淋巴冲洗 | 清磁盘垃圾(缓存/僵尸/旧产物) → ⛔不碰原始层/脚本 → mv trash | phases §4 |
-| 5 髓鞘化+自检 | 高频流程固化成 skill → 校验工具回路 → 架构自检(实际 vs 蓝图对账) | phases §5 |
+| 5 髓鞘化+自检 | 高频流程固化 skill → 校验回路 → 项目归档检测 → 架构自检(实际 vs 蓝图) | phases §5 |
 | 6 清醒回忆 | 输出 diff 摘要 → 高危动作列清单等确认 → 追加日志 | phases §6 |
 
 完整流程见 [`references/dream-phases.md`](references/dream-phases.md)。
